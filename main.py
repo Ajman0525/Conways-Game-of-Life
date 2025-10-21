@@ -15,7 +15,7 @@ YELLOW = (255,255,0)
 WIDTH, HEIGHT = 600, 600 
 
 # ---- SIZE OF EVERY SINGLE TILE ---- #
-TILE_SIZE = 20
+TILE_SIZE = 10
 
 # ---- NUMBER OF TILES IN THE GRID ---- #
 GRID_WIDTH = WIDTH // TILE_SIZE
@@ -89,7 +89,7 @@ def main():
     running = True
     playing = False
     count = 0
-    update_frequency = 120
+    update_frequency = 5
     
     positions = set() # Contains all the positions of live cells
     while running:
@@ -127,7 +127,7 @@ def main():
                     count = 0
 
                 if event.key == pygame.K_g:
-                    positions = gen(random.randrange(2,5) * GRID_WIDTH) # Randomly generate cells
+                    positions = gen(random.randrange(10,20) * GRID_WIDTH) # Randomly generate cells
                 
 
         screen.fill(GREY)   # Color of the screen
