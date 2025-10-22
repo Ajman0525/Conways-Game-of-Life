@@ -84,6 +84,9 @@ def get_neighbors(pos):
     
     return neighbors
 
+# ---- TO DO: Add a function that takes number of generations as input ---- #
+def generation_num():
+    pass
 
 def main():
     running = True
