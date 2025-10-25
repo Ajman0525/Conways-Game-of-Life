@@ -3,25 +3,19 @@ import random
 
 pygame.init()
 
-# ---- Window Title ---- #
 pygame.display.set_caption("Conway's Game of Life")
 
-# ---- COLOR VARIABLES ---- #
 BLACK = (0,0,0)
 GREY = (128,128,128)
 YELLOW = (255,255,0)
 
-# ---- WIDTH AND HEIGHT OF THE SCREEN ---- #
 WIDTH, HEIGHT = 600, 600 
 
-# ---- SIZE OF EVERY SINGLE TILE ---- #
 TILE_SIZE = 10
 
-# ---- NUMBER OF TILES IN THE GRID ---- #
 GRID_WIDTH = WIDTH // TILE_SIZE
 GRID_HEIGHT = HEIGHT // TILE_SIZE
 
-# ---- FRAMES PER SECOND ---- #
 FPS = 60
 
 
