@@ -8,16 +8,17 @@ pygame.display.set_caption("Conway's Game of Life")
 BLACK = (0,0,0)
 GREY = (128,128,128)
 YELLOW = (255,255,0)
+from game_of_life_logic import(
+    determine_next_cell_state,
+    count_live_neighbors,
+    WIDTH, # Window Size
+    HEIGHT, # Window Size
+    GRID_WIDTH,
+    GRID_HEIGHT,
+    TILE_SIZE
 
-WIDTH, HEIGHT = 600, 600 
-
-TILE_SIZE = 10
-
-GRID_WIDTH = WIDTH // TILE_SIZE
-GRID_HEIGHT = HEIGHT // TILE_SIZE
-
+)
 FPS = 60
-
 
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
@@ -39,6 +40,50 @@ def draw_grid(positions):
     for col in range(GRID_WIDTH):
         pygame.draw.line(screen, BLACK, (col * TILE_SIZE, 0), (col * TILE_SIZE, HEIGHT)) # Vertical Grid Lines
 
+def adjust_grid(positions):
+    # Initializes the set of positions that must be checked for reproduction.
+    cells_to_check_for_reproduction = set() 
+    
+    new_live_positions = set() 
+
+    # 1. CHECK CURRENTLY LIVE CELLS (Survival)
+    for cell_position in positions:
+        
+        live_neighbors_count = count_live_neighbors(
+            cell_position, 
+            positions, 
+            GRID_WIDTH, 
+            GRID_HEIGHT
+        )
+        
+        if determine_next_cell_state(is_alive=True, live_neighbors=live_neighbors_count):
+            new_live_positions.add(cell_position)
+        
+        current_x, current_y = cell_position
+        for offset_x in [-1, 0, 1]:
+            for offset_y in [-1, 0, 1]:
+                if offset_x == 0 and offset_y == 0:
+                    continue
+                cells_to_check_for_reproduction.add((current_x + offset_x, current_y + offset_y))
+
+    # 2. CHECK DEAD NEIGHBORS (Reproduction)
+    for position_to_check in cells_to_check_for_reproduction:
+        
+        # Skips cells that were already handled in the survival check.
+        if position_to_check in positions: 
+            continue
+            
+        live_neighbors_count = count_live_neighbors(
+            position_to_check, 
+            positions, 
+            GRID_WIDTH, 
+            GRID_HEIGHT
+        )
+        
+        if determine_next_cell_state(is_alive=False, live_neighbors=live_neighbors_count):
+            new_live_positions.add(position_to_check)
+    
+    return new_live_positions
 
 # ---- TO DO: Add a function that takes number of generations as input ---- #
 def generation_num():
