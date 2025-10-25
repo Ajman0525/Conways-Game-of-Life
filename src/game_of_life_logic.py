@@ -1,5 +1,10 @@
-GRID_WIDTH = 60
-GRID_HEIGHT = 60
+WIDTH, HEIGHT = 600, 600 
+
+TILE_SIZE = 10
+
+GRID_WIDTH = WIDTH // TILE_SIZE
+GRID_HEIGHT = HEIGHT // TILE_SIZE
+
 
 def determine_next_cell_state(is_alive: bool, live_neighbors: int) -> bool:
     if is_alive:
@@ -7,45 +12,33 @@ def determine_next_cell_state(is_alive: bool, live_neighbors: int) -> bool:
     else:
         return live_neighbors == 3
     
-def count_live_neighbors(pos, live_positions, GRID_WIDTH, GRID_HEIGHT):
-    return 0
-
-#  def get_neighbors(pos):
-#     x, y = pos
-#     neighbors = []
-#     for dx in [-1, 0, 1]:
-#         if x + dx < 0 or x + dx > GRID_WIDTH:
-#             continue
-#         for dy in [-1, 0, 1]:
-#             if y + dy < 0 or y + dy > GRID_HEIGHT:
-#                 continue
-#             if dx == 0 and dy == 0:
-#                 continue
-
-#             neighbors.append((x + dx, y + dy))
+def count_live_neighbors(cell_position: tuple[int, int], live_positions: set[tuple[int, int]], grid_width: int, grid_height: int) -> int:
+    '''Counts live neighbors around a cell, doing boundary and liveness checks 
+    to eliminate duplication (Criteria 3).'''
     
-#     return neighbors
+    current_x, current_y = cell_position
+    live_neighbor_count = 0 
 
+    for offset_x in [-1, 0, 1]:
+        for offset_y in [-1, 0, 1]:
+            
+            neighbor_x = current_x + offset_x
+            neighbor_y = current_y + offset_y
 
-# def adjust_grid(positions):
-#     all_neighbors = set() # Neighbors of the original live set of cells
-#     new_positions = set() # New set of live cell positions
+            # Skips the cell itself, as a cell is not its own neighbor.
+            if offset_x == 0 and offset_y == 0:
+                continue
 
-#     for position in positions:
-#         neighbors = get_neighbors(position)
-#         all_neighbors.update(neighbors)
+            # Skips any neighbor that falls outside the defined grid boundaries.
+            if neighbor_x < 0 or neighbor_x >= grid_width:
+                continue
+            if neighbor_y < 0 or neighbor_y >= grid_height:
+                continue
 
-#         neighbors = list(filter(lambda x: x in positions, neighbors)) # Anonymous function that acts as a filter to neighboring cells and returns only the live ones
+            neighbor_position = (neighbor_x, neighbor_y)
 
-#         if len(neighbors) in [2,3]: # Rule no. 2 (survival)
-#             new_positions.add(position)
-        
-#     for position in all_neighbors:
-#         neighbors = get_neighbors(position) 
+            # Check if the valid neighbor's position is present in the set of all live cells
+            if neighbor_position in live_positions:
+                live_neighbor_count += 1
 
-#         neighbors = list(filter(lambda x: x in positions, neighbors)) # Note: Make a function for this instead to prevent duplication
-        
-#         if len(neighbors) == 3:
-#             new_positions.add(position)
-    
-#     return new_positions
+    return live_neighbor_count
