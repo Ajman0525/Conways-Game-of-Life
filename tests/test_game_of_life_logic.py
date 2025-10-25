@@ -1,5 +1,8 @@
 from src.game_of_life_logic import determine_next_cell_state
 
+#-----------------------#
+#   ISSUE #1 TESTING    #
+#-----------------------#
 
 # --- Alive cell tests --- #
 # Rule: A live cell with two or three live neighbors remains alive in the next generation (SURVIVAL)
@@ -25,3 +28,7 @@ def test_reproduction_brings_cell_to_life():
 # Rule: A dead cell with any other count remains dead (DEFAULT)
 def test_dead_cell_with_two_neighbors_remains_dead():
     assert determine_next_cell_state(is_alive=False, live_neighbors=2) is False
+
+#-----------------------#
+#   ISSUE #2 TESTING    #
+#-----------------------#

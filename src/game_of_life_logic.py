@@ -1,9 +1,11 @@
-# Issue #1 (Tested and Resolved)
 def determine_next_cell_state(is_alive: bool, live_neighbors: int) -> bool:
     if is_alive:
         return live_neighbors in [2, 3]
     else:
         return live_neighbors == 3
+    
+def count_live_neighbors(pos, live_positions):
+    return 0
 
 #  def get_neighbors(pos):
 #     x, y = pos
