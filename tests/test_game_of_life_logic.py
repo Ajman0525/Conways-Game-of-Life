@@ -1,4 +1,3 @@
-import pytest
 from src.game_of_life_logic import determine_next_cell_state
 
 
