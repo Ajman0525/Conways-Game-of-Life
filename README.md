@@ -56,7 +56,7 @@ pipenv shell
 ```
 #### 3. Run the main simulation program:
 ```bash 
-python main.py
+pipenv run python -m src.main
 ```
 #### 4. To run automated tests using Pytest:
 ```bash 
