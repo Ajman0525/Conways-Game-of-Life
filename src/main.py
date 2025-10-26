@@ -1,15 +1,5 @@
 import pygame
 import random
-
-pygame.init()
-
-pygame.display.set_caption("Conway's Game of Life")
-
-BLACK = (0, 0, 0)
-GREY = (30, 30, 30)
-YELLOW = (255, 255, 0)
-GREEN = (0, 255, 0)
-
 from .game_of_life_logic import(
     determine_next_cell_state,
     count_live_neighbors,
@@ -21,16 +11,15 @@ from .game_of_life_logic import(
     TILE_SIZE
 )
 
+BLACK = (0, 0, 0)
+GREY = (30, 30, 30)
+YELLOW = (255, 255, 0)
+GREEN = (0, 255, 0)
+
 FPS = 60
 
-screen = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
-
-clock = pygame.time.Clock()
-
 current_generation = 0
-
 target_generations = None  
-
 
 def generate_random_cells(count):
     return set([(random.randrange(0,GRID_HEIGHT), random.randrange(0,GRID_WIDTH)) for _ in range(count)]) 
@@ -71,7 +60,16 @@ def adjust_grid(positions: set) -> set:
     
     return new_live_positions
 
-def main():
+def main(initial_target_generations):
+
+    pygame.init()
+    pygame.display.set_caption("Conway's Game of Life")
+    
+    global screen, clock
+    
+    screen = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
+    clock = pygame.time.Clock()
+
     running = True
     playing = False
     count = 0
@@ -81,19 +79,7 @@ def main():
     
     global current_generation, target_generations
     current_generation = 0
-    target_generations = None  
-
-    try:
-        gens = input("Enter number of generations to run (or press Enter for unlimited): ")
-        if gens.strip() == "":
-            target_generations = None
-            print("Running unlimited generations")
-        else:
-            target_generations = int(gens)
-            print(f"Will run for {target_generations} generations")
-    except ValueError:
-        print("Invalid input. Running unlimited generations")
-        target_generations = None
+    target_generations = initial_target_generations
 
     positions = generate_random_cells(random.randrange(10,20) * GRID_WIDTH)  # Randomly generate some live cells
 
@@ -159,11 +145,28 @@ def main():
 
 if __name__ == "__main__":
     import sys
+
+    initial_target_generations = None
+
     if len(sys.argv) > 1:
         try:
-            target_generations = int(sys.argv[1])
-            print(f"Will run for {target_generations} generations")
+            initial_target_generations = int(sys.argv[1])
+            print(f"Simulation will run for {initial_target_generations} generations")
         except ValueError:
             print("Usage: python main.py [generations]")
-            target_generations = None
-    main()
+            initial_target_generations = None
+
+    if initial_target_generations is None:
+        try:
+            gens = input("Enter number of generations to run (or press Enter for unlimited): ")
+            if gens.strip() == "":
+                initial_target_generations = None
+                print("Running unlimited generations")
+            else:
+                initial_target_generations = int(gens)
+                print(f"Simulation will run for {initial_target_generations} generations")
+        except ValueError:
+            print("Invalid input. Running unlimited generations")
+            initial_target_generations = None
+
+    main(initial_target_generations)
