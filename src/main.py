@@ -5,9 +5,10 @@ pygame.init()
 
 pygame.display.set_caption("Conway's Game of Life")
 
-BLACK = (0,0,0)
-GREY = (128,128,128)
-YELLOW = (255,255,0)
+BLACK = (0, 0, 0)
+GREY = (128, 128, 128)
+YELLOW = (255, 255, 0)
+WHITE = (255, 255, 255)
 
 from .game_of_life_logic import(
     determine_next_cell_state,
@@ -75,13 +76,13 @@ def main():
     playing = False
     count = 0
     update_frequency = 5 # Calibrate to a higher value for a slower update speed
+
+    positions = set()
     
-    # (2) New added variables
     global current_generation, target_generations
     current_generation = 0
-    target_generations = None  # None means run indefinitely
+    target_generations = None  
 
-    # <-- CHANGE: Ask user in terminal for number of generations
     try:
         gens = input("Enter number of generations to run (or press Enter for unlimited): ")
         if gens.strip() == "":
@@ -94,11 +95,10 @@ def main():
         print("Invalid input. Running unlimited generations")
         target_generations = None
 
-    # <-- CHANGE: Generate initial random live cells automatically
     positions = generate_random_cells(random.randrange(10,20) * GRID_WIDTH)  # Randomly generate some live cells
 
     while running:
-        clock.tick(FPS) # Regulate the fps of the loop
+        clock.tick(FPS) 
 
         if playing:
             count += 1
@@ -106,64 +106,59 @@ def main():
         if count >= update_frequency:
             count = 0
             positions = adjust_grid(positions)
-            # (3) New added logic
             current_generation += 1
 
-            #(4) New added logic that stops if target generations is reached
             if target_generations is not None and current_generation >= target_generations:
                 playing = False
                 print(f"Reached target of {target_generations} generations.")
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT: # Terminate the loop once the game exits 
+            if event.type == pygame.QUIT: 
                 running = False
             
-            if event.type == pygame.MOUSEBUTTONDOWN: # Mark a position when the mouse is pressed 
+            if event.type == pygame.MOUSEBUTTONDOWN: 
                 x, y = pygame.mouse.get_pos()
                 col = x // TILE_SIZE
                 row = y // TILE_SIZE
                 pos = (col, row)
 
-                if pos in positions: # Note: constant time complexity
+                if pos in positions: 
                     positions.remove(pos)
                 else:
                     positions.add(pos)
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE: # Pausing or playing the simulation
+                if event.key == pygame.K_SPACE: 
                     playing = not playing
 
-                if event.key == pygame.K_c: # Resets the screen
+                if event.key == pygame.K_c: 
                     positions = set()
                     playing = False
                     count = 0
-                    current_generation = 0 #(5) New added variable reset generation counter
-                    target_generations = None #(6) New added variable clear target
+                    current_generation = 0 
+                    target_generations = None 
 
                 if event.key == pygame.K_g:
-                    positions = gen(random.randrange(10,20) * GRID_WIDTH) # Randomly generate cells
-                    current_generation = 0 #(7) New added variable reset generation counter
+                    positions = generate_random_cells(random.randrange(10,20) * GRID_WIDTH) 
+                    current_generation = 0 
 
-                # <-- CHANGE: Removed old K_n input since terminal now handles generations
 
-        screen.fill(GREY)   # Color of the screen
-        draw_grid(positions) # Draw the grids
+        screen.fill(GREY)   
+        draw_grid(positions) 
 
-        #(9) New added logic Display current generation count
-        font = pygame.font.SysFont('Arial', 20)
+        font = pygame.font.Font(None, 20)
         gen_text = f"Generation: {current_generation}"
         if target_generations is not None:
             gen_text += f" / {target_generations}"
-        text_surface = font.render(gen_text, True, BLACK)
+        text_surface = font.render(gen_text, True, WHITE)
         screen.blit(text_surface, (10, 10))
         
-        pygame.display.update() # Applies the drawing and show it to the screen
+        pygame.display.update() 
 
     pygame.quit()
 
 if __name__ == "__main__":
     import sys
-    # (10) New added logic to accept command-line argument for generations
     if len(sys.argv) > 1:
         try:
             target_generations = int(sys.argv[1])
