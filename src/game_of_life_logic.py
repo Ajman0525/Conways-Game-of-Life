@@ -42,3 +42,23 @@ def count_live_neighbors(cell_position: tuple[int, int], live_positions: set[tup
                 live_neighbor_count += 1
 
     return live_neighbor_count
+
+def get_cells_to_evaluate(live_positions, grid_width, grid_height):
+    cells_to_check = set(live_positions)
+    
+    # Iterate through every live cell to find all 8 neighbors
+    for current_x, current_y in live_positions:
+        for offset_x in [-1, 0, 1]:
+            for offset_y in [-1, 0, 1]:
+                # Skips the cell itself, as it's already in the set
+                if offset_x == 0 and offset_y == 0:
+                    continue
+
+                neighbor_x = current_x + offset_x
+                neighbor_y = current_y + offset_y
+                
+                # Only add neighbors that are within the grid bounds
+                if (0 <= neighbor_x < grid_width) and (0 <= neighbor_y < grid_height):
+                    cells_to_check.add((neighbor_x, neighbor_y))
+
+    return cells_to_check

@@ -11,6 +11,7 @@ YELLOW = (255,255,0)
 from .game_of_life_logic import(
     determine_next_cell_state,
     count_live_neighbors,
+    get_cells_to_evaluate,
     WINDOW_WIDTH, # Window Size
     WINDOW_HEIGHT, # Window Size
     GRID_WIDTH,
@@ -40,48 +41,24 @@ def draw_grid(positions):
     for col in range(GRID_WIDTH):
         pygame.draw.line(screen, BLACK, (col * TILE_SIZE, 0), (col * TILE_SIZE, WINDOW_HEIGHT)) # Vertical Grid Lines
 
-def adjust_grid(positions):
-    # Initializes the set of positions that must be checked for reproduction.
-    cells_to_check_for_reproduction = set() 
-    
+def adjust_grid(positions: set) -> set:
     new_live_positions = set() 
 
-    # 1. CHECK CURRENTLY LIVE CELLS (Survival)
-    for cell_position in positions:
+    cells_to_evaluate = get_cells_to_evaluate(positions, GRID_WIDTH, GRID_HEIGHT)
+
+    for cell_position in cells_to_evaluate:
         
+        is_alive = cell_position in positions
+
         live_neighbors_count = count_live_neighbors(
             cell_position, 
             positions, 
             GRID_WIDTH, 
             GRID_HEIGHT
         )
-        
-        if determine_next_cell_state(is_alive=True, live_neighbors=live_neighbors_count):
-            new_live_positions.add(cell_position)
-        
-        current_x, current_y = cell_position
-        for offset_x in [-1, 0, 1]:
-            for offset_y in [-1, 0, 1]:
-                if offset_x == 0 and offset_y == 0:
-                    continue
-                cells_to_check_for_reproduction.add((current_x + offset_x, current_y + offset_y))
-
-    # 2. CHECK DEAD NEIGHBORS (Reproduction)
-    for position_to_check in cells_to_check_for_reproduction:
-        
-        # Skips cells that were already handled in the survival check.
-        if position_to_check in positions: 
-            continue
             
-        live_neighbors_count = count_live_neighbors(
-            position_to_check, 
-            positions, 
-            GRID_WIDTH, 
-            GRID_HEIGHT
-        )
-        
-        if determine_next_cell_state(is_alive=False, live_neighbors=live_neighbors_count):
-            new_live_positions.add(position_to_check)
+        if determine_next_cell_state(is_alive=is_alive, live_neighbors=live_neighbors_count):
+            new_live_positions.add(cell_position)
     
     return new_live_positions
 
