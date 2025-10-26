@@ -73,11 +73,15 @@ def test_cell_at_edge_has_max_five_neighbors():
     }
     assert count_live_neighbors(top_edge_test_position, live_neighbors_set, GRID_WIDTH, GRID_HEIGHT) == 5
 
+#---------------------------------------------#
+#   MULTI-RULE TESTING USING GLIDER PATTERN   #
+#---------------------------------------------#
+
 def test_glider_pattern_moves_one_generation():
         # Standard Glider Pattern (Moves Diagonally)
-        # Y=0: . X . 
-        # Y=1: . . X
-        # Y=2: X X X
+        #  . X . 
+        #  . . X
+        #  X X X
         GLIDER_START = {
             (1, 0), 
             (2, 1), 
@@ -87,10 +91,10 @@ def test_glider_pattern_moves_one_generation():
         }
 
         # Expected state after 1 generation:
-        # Y=0: . . .
-        # Y=1: X . X
-        # Y=2: . X X
-        # Y=3: . X .
+        # . . .
+        # X . X
+        # . X X
+        # . X .
         GLIDER_GENERATION_1 = {
             (0, 1), 
             (2, 1),
