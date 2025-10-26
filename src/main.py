@@ -121,9 +121,7 @@ def main(initial_target_generations):
                     positions = set()
                     playing = False
                     count = 0
-                    current_generation = 0 
-                    target_generations = None 
-
+                    
                 if event.key == pygame.K_g:
                     positions = generate_random_cells(random.randrange(10,20) * GRID_WIDTH) 
                     current_generation = 0 
@@ -158,7 +156,7 @@ if __name__ == "__main__":
 
     if initial_target_generations is None:
         try:
-            gens = input("Enter number of generations to run (or press Enter for unlimited): ")
+            gens = input("Enter number of generations to run (press `Enter` for unlimited generations): ")
             if gens.strip() == "":
                 initial_target_generations = None
                 print("Running unlimited generations")
