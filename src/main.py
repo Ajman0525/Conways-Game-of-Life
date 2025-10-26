@@ -6,9 +6,9 @@ pygame.init()
 pygame.display.set_caption("Conway's Game of Life")
 
 BLACK = (0, 0, 0)
-GREY = (128, 128, 128)
+GREY = (30, 30, 30)
 YELLOW = (255, 255, 0)
-WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
 
 from .game_of_life_logic import(
     determine_next_cell_state,
@@ -146,11 +146,11 @@ def main():
         screen.fill(GREY)   
         draw_grid(positions) 
 
-        font = pygame.font.Font(None, 20)
+        font = pygame.font.Font(None, 25)
         gen_text = f"Generation: {current_generation}"
         if target_generations is not None:
             gen_text += f" / {target_generations}"
-        text_surface = font.render(gen_text, True, WHITE)
+        text_surface = font.render(gen_text, True, GREEN)
         screen.blit(text_surface, (10, 10))
         
         pygame.display.update() 
