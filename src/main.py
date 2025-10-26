@@ -11,8 +11,8 @@ YELLOW = (255,255,0)
 from game_of_life_logic import(
     determine_next_cell_state,
     count_live_neighbors,
-    WIDTH, # Window Size
-    HEIGHT, # Window Size
+    WINDOW_WIDTH, # Window Size
+    WINDOW_HEIGHT, # Window Size
     GRID_WIDTH,
     GRID_HEIGHT,
     TILE_SIZE
@@ -20,7 +20,7 @@ from game_of_life_logic import(
 )
 FPS = 60
 
-screen = pygame.display.set_mode((WIDTH,HEIGHT))
+screen = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 
 clock = pygame.time.Clock()
 
@@ -35,10 +35,10 @@ def draw_grid(positions):
         pygame.draw.rect(screen, YELLOW, (*top_left, TILE_SIZE, TILE_SIZE)) # Note *top_left will unpack the values so that they would be written individually
 
     for row in range(GRID_HEIGHT):
-        pygame.draw.line(screen, BLACK, (0, row * TILE_SIZE), (WIDTH, row * TILE_SIZE)) # Horizontal Grid Lines
+        pygame.draw.line(screen, BLACK, (0, row * TILE_SIZE), (WINDOW_WIDTH, row * TILE_SIZE)) # Horizontal Grid Lines
     
     for col in range(GRID_WIDTH):
-        pygame.draw.line(screen, BLACK, (col * TILE_SIZE, 0), (col * TILE_SIZE, HEIGHT)) # Vertical Grid Lines
+        pygame.draw.line(screen, BLACK, (col * TILE_SIZE, 0), (col * TILE_SIZE, WINDOW_HEIGHT)) # Vertical Grid Lines
 
 def adjust_grid(positions):
     # Initializes the set of positions that must be checked for reproduction.

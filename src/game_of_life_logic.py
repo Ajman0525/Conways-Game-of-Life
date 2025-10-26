@@ -1,9 +1,9 @@
-WIDTH, HEIGHT = 600, 600 
+WINDOW_WIDTH, WINDOW_HEIGHT = 600, 600 
 
-TILE_SIZE = 10
+TILE_SIZE = 20
 
-GRID_WIDTH = WIDTH // TILE_SIZE
-GRID_HEIGHT = HEIGHT // TILE_SIZE
+GRID_WIDTH = WINDOW_WIDTH // TILE_SIZE
+GRID_HEIGHT = WINDOW_HEIGHT // TILE_SIZE
 
 
 def determine_next_cell_state(is_alive: bool, live_neighbors: int) -> bool:
