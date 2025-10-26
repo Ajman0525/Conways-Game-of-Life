@@ -93,7 +93,7 @@ def main():
     running = True
     playing = False
     count = 0
-    update_frequency = 5
+    update_frequency = 5 # Calibrate to a higher value for a slower update speed
     
     positions = set() # Contains all the positions of live cells
     while running:
