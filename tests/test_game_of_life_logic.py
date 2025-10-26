@@ -73,34 +73,34 @@ def test_cell_at_edge_has_max_five_neighbors():
     }
     assert count_live_neighbors(top_edge_test_position, live_neighbors_set, GRID_WIDTH, GRID_HEIGHT) == 5
 
-
 def test_glider_pattern_moves_one_generation():
-    # Glider starts at Top-left:
-    # X . X
-    # . . X
-    # X X X
-    GLIDER_START = {
-        (0, 2), 
-        (1, 0), 
-        (2, 2), 
-        (2, 1), 
-        (2, 0) 
-    }
+        # Standard Glider Pattern (Moves Diagonally)
+        # Y=0: . X . 
+        # Y=1: . . X
+        # Y=2: X X X
+        GLIDER_START = {
+            (1, 0), 
+            (2, 1), 
+            (0, 2), 
+            (1, 2), 
+            (2, 2)
+        }
 
-    # Glider after 1 generation:
-    # . X .
-    # . . X
-    # X X X
-    GLIDER_GENERATION_1 = {
-        (0, 1), 
-        (1, 2), 
-        (2, 2), 
-        (2, 1), 
-        (1, 0)
-    }
+        # Expected state after 1 generation:
+        # Y=0: . . .
+        # Y=1: X . X
+        # Y=2: . X X
+        # Y=3: . X .
+        GLIDER_GENERATION_1 = {
+            (0, 1), 
+            (2, 1),
+            (1, 2), 
+            (2, 2),
+            (1, 3) 
+        }
 
-    next_generation = adjust_grid(GLIDER_START)
-    assert next_generation == GLIDER_GENERATION_1
+        next_generation = adjust_grid(GLIDER_START)
+        assert next_generation == GLIDER_GENERATION_1
 
 def test_block_pattern_is_stable():
     BLOCK_START = {
