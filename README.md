@@ -1,4 +1,4 @@
-# Generating Conway's Game of Life using Python
+# Conway's Game of Life: Implemented with Test-Driven Development Approach
 A simulation of Conway’s Game of Life built using Python and developed following the Test-Driven Development (TDD) approach. 
 The project demonstrates the application of automated testing and Python-based visualization using Pygame.
 
