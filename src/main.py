@@ -8,7 +8,7 @@ pygame.display.set_caption("Conway's Game of Life")
 BLACK = (0,0,0)
 GREY = (128,128,128)
 YELLOW = (255,255,0)
-from game_of_life_logic import(
+from .game_of_life_logic import(
     determine_next_cell_state,
     count_live_neighbors,
     WINDOW_WIDTH, # Window Size
