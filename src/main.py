@@ -9,8 +9,7 @@ BLACK = (0,0,0)
 GREY = (128,128,128)
 YELLOW = (255,255,0)
 
-# FIXED IMPORT: Removed the dot to import from same directory
-from game_of_life_logic import(
+from .game_of_life_logic import(
     determine_next_cell_state,
     count_live_neighbors,
     get_cells_to_evaluate,
@@ -27,20 +26,22 @@ screen = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
 
 clock = pygame.time.Clock()
 
-#(1) New added variables for generation control
 current_generation = 0
-target_generations = None  # None means run indefinitely
+
+target_generations = None  
 
 
-def gen(num):
-    return set([(random.randrange(0,GRID_HEIGHT), random.randrange(0,GRID_WIDTH)) for _ in range(num)]) 
+def generate_random_cells(count):
+    return set([(random.randrange(0,GRID_HEIGHT), random.randrange(0,GRID_WIDTH)) for _ in range(count)]) 
 
-def draw_grid(positions):
+def draw_grid(live_cells):
 
-    for position in positions: # A set containing the positions of the live cells
+    for position in live_cells: 
         col, row = position
         top_left = (col * TILE_SIZE, row * TILE_SIZE)
-        pygame.draw.rect(screen, YELLOW, (*top_left, TILE_SIZE, TILE_SIZE)) # Note *top_left will unpack the values so that they would be written individually
+
+        # Note *top_left will unpack the values as if they would be written individually
+        pygame.draw.rect(screen, YELLOW, (*top_left, TILE_SIZE, TILE_SIZE)) 
 
     for row in range(GRID_HEIGHT):
         pygame.draw.line(screen, BLACK, (0, row * TILE_SIZE), (WINDOW_WIDTH, row * TILE_SIZE)) # Horizontal Grid Lines
@@ -94,8 +95,7 @@ def main():
         target_generations = None
 
     # <-- CHANGE: Generate initial random live cells automatically
-    positions = gen(random.randrange(10,20) * GRID_WIDTH)  # Randomly generate some live cells
-    playing = True  # Start simulation automatically
+    positions = generate_random_cells(random.randrange(10,20) * GRID_WIDTH)  # Randomly generate some live cells
 
     while running:
         clock.tick(FPS) # Regulate the fps of the loop
