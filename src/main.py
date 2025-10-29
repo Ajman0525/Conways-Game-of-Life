@@ -163,12 +163,18 @@ def main():
 
 if __name__ == "__main__":
     import sys
-    # (10) New added logic to accept command-line argument for generations
-    if len(sys.argv) > 1:
-        try:
-            target_generations = int(sys.argv[1])
-            print(f"Will run for {target_generations} generations")
-        except ValueError:
-            print("Usage: python main.py [generations]")
+
+    try:
+        gens = input("Enter number of generations to run (or press Enter for unlimited): ")
+        if gens.strip() == "":
             target_generations = None
+            print("Running unlimited generations")
+        else:
+            target_generations = int(gens)
+            print(f"Set to run for {target_generations} generations.")
+    except ValueError:
+        print("Invalid input. Running unlimited generations")
+        target_generations = None
+
     main()
+
